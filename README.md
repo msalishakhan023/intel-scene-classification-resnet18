@@ -1,4 +1,4 @@
-# Intel Natural Scene Classification with Transfer Learning
+# weeko5  Intel Natural Scene Classification with Transfer Learning
 
 An end-to-end deep learning project implementing **Transfer Learning** in PyTorch using a pre-trained **ResNet-18** architecture for natural scene classification on the Intel Image Classification dataset.
 
@@ -64,3 +64,35 @@ Transitioning from standard benchmark datasets to domain-specific applications: 
 * **Framework:** PyTorch & Torchvision
 * **Environment:** Kaggle Notebooks (GPU T4 Accelerated)
 * **Libraries:** NumPy, Matplotlib, Scikit-Learn, PIL
+
+* # Week 6: Pneumonia Detection with ResNet18
+
+**Who benefits:** Radiologists and clinical staff in hospital triage settings. **Why it matters:** Early and accurate identification of pneumonia reduces diagnostic delays, lowers healthcare costs, and prevents potential patient harm or mortality from untreated respiratory infections.
+
+**Dataset:** Chest X-Ray Images (Pneumonia) on Kaggle; 5,856 total images across 2 classes (NORMAL and PNEUMONIA); labeled by board-certified radiologists.
+
+**Data audit:** Imbalance ratio 2.9:1; exact duplicates 62; test images with a near-duplicate in train 0; split by patient (group id), 0 shared groups.
+
+**Imbalance handling:** Weighted loss with cross-entropy loss, class weights NORMAL: 1.935, PNEUMONIA: 0.674.
+
+**Results (test, used once):** Macro-F1 0.919; NORMAL recall 0.829, PNEUMONIA recall 0.985; for binary: sensitivity 0.990 and specificity 0.808 at threshold 0.367 (set on val).
+
+**Grad-CAM:** The model looks mostly at central lung fields and mediastinum, but occasionally focuses on corner shoulder/text markers; shortcut risk: suspected shortcut due to attention on corner orientation markers.
+
+**Limitations:** Single pediatric dataset source, high prevalence setting, and restricted image resolutions. Not for standalone clinical diagnosis or automated decision-making without expert supervision.
+
+---
+
+### Additional Risk & Ethical Analysis 
+
+1. **Who could be harmed and how?** 
+   - Patients could be harmed if the model produces a False Negative (missed pneumonia leading to delayed treatment) or a False Positive (causing unnecessary antibiotic administration and clinical anxiety).
+
+2. **Where was the model NOT validated?** 
+   - The model was not validated on adult or elderly patient populations, non-pediatric clinical settings, external healthcare facilities with different X-ray machines, or scans with co-occurring chest pathologies (e.g., tuberculosis, lung cancer).
+
+3. **What is the human role?** 
+   - The model acts strictly as a secondary triage or screening assistant. Final diagnostic decisions and clinical actions must always be reviewed and confirmed by a certified radiologist or healthcare provider.
+
+4. **What evidence would change your conclusions?** 
+   - Demonstrating performance drops when evaluated on external datasets from different hospitals, or observing that removing corner text markers significantly degrades model accuracy, would prove heavy reliance on shortcuts and invalidate these clinical findings.
